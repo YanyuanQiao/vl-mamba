@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+    content="Deformable Neural Radiance Fields creates free-viewpoint portraits (nerfies) from casually captured videos.">
+  <meta name="keywords" content="Nerfies, D-NeRF, NeRF">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VL-Mamba</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+
+<body>
+
+  <!-- <nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://keunhong.com">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://hypernerf.github.io">
+            HyperNeRF
+          </a>
+          <a class="navbar-item" href="https://nerfies.github.io">
+            Nerfies
+          </a>
+          <a class="navbar-item" href="https://latentfusion.github.io">
+            LatentFusion
+          </a>
+          <a class="navbar-item" href="https://photoshape.github.io">
+            PhotoShape
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav> -->
+
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">VL-Mamba: Exploring State Space Models for Multimodal Learning</h1>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                Yanyuan Qiao</a><sup>1</sup>,</span>
+              <span class="author-block">
+                Zheng Yu</a><sup>1</sup>,</span>
+              <span class="author-block">
+                Longteng Guo</a><sup>2</sup>,
+              </span>
+              <span class="author-block">
+                Sihan Chen</a><sup>2,3</sup>,
+              </span>
+              <span class="author-block">
+                Zijia Zhao</a><sup>2,3</sup>,
+              </span>
+              <span class="author-block">
+                Mingzhen Sun</a><sup>2,3</sup>,
+              </span>
+              <span class="author-block">
+                Qi Wu</a><sup>1*</sup>,
+              </span>
+              <span class="author-block">
+                jing Liu</a><sup>2,3</sup>
+              </span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><sup>1</sup>Australian Institute for Machine Learning, The University of Adelaide,</span>
+              <span class="author-block"><sup>2</sup>Institute of Automation, Chinese Academy of Sciences,</span>
+              <span class="author-block"><sup>3</sup>School of Artificial Intelligence, University of Chinese Academy of Sciences.</span>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- PDF Link. -->
+                <!-- <span class="link-block">
+                  <a href="https://arxiv.org/pdf/2305.16103.pdf" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Paper</span>
+                  </a>
+                </span> -->
+                <!-- <span class="link-block">
+                  <a href="https://arxiv.org/abs/2305.16103" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                    </span>
+                    <span>arXiv</span>
+                  </a>
+                </span> -->
+                <!-- Video Link. -->
+                <!-- <span class="link-block">
+                <a href="https://www.youtube.com/watch?v=MrKrnHhk8IA"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span> -->
+                <!-- Code Link. -->
+                <span class="link-block">
+                  <a href="https://github.com/ZhengYu518/VL-Mamba" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span>
+                  </a>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- <section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <video id="teaser" autoplay muted loop playsinline height="100%">
+        <source src="./static/videos/teaser.mp4"
+                type="video/mp4">
+      </video>
+      <h2 class="subtitle has-text-centered">
+        <span class="dnerf">Nerfies</span> turns selfie videos from your phone into
+        free-viewpoint
+        portraits.
+      </h2>
+    </div>
+  </div>
+</section> -->
+
+  <!-- 
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div id="results-carousel" class="carousel results-carousel">
+        <div class="item item-steve">
+          <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/steve.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-chair-tp">
+          <video poster="" id="chair-tp" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/chair-tp.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-shiba">
+          <video poster="" id="shiba" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/shiba.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-fullbody">
+          <video poster="" id="fullbody" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/fullbody.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-blueshirt">
+          <video poster="" id="blueshirt" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/blueshirt.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-mask">
+          <video poster="" id="mask" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/mask.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-coffee">
+          <video poster="" id="coffee" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/coffee.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-toby">
+          <video poster="" id="toby" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/toby2.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <!-- Abstract. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+
+          <h2 class="title is-3">Abstract</h2>
+          <!-- <img id="teaser" width="40%" src="static/examples/ills.png"> -->
+          
+          <div class="content has-text-justified">
+            <p>
+              Multimodal large language models (MLLMs) have attracted widespread interest and have rich applications. 
+              However, the inherent attention mechanism in its Transformer structure requires quadratic complexity and results in expensive computational overhead. 
+              Therefore, in this work, we propose VL-Mamba, a multimodal large language model based on state space models, 
+              which have been shown to have great potential for long-sequence modeling with fast inference and linear scaling in sequence length.
+            </p>
+            <p>
+              Specifically, we first replace the transformer-based backbone language model such as LLama or Vicuna with the pre-trained Mamba language model. 
+              Then, we empirically explore how to effectively apply the 2D vision selective scan mechanism for multimodal learning and the combinations of different vision encoders and variants of pretrained Mamba language models. 
+              The extensive experiments on diverse multimodal benchmarks with competitive performance show the effectiveness of our proposed VL-Mamba and demonstrate the great potential of applying state space models for multimodal learning tasks. 
+            </p>
+            <p>
+
+            </p>
+          </div>
+        </div>
+      </div>
+      <!--/ Abstract. -->
+
+      <!-- Paper video. -->
+      <!-- <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/MrKrnHhk8IA?rel=0&amp;showinfo=0"
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div> -->
+      <!--/ Paper video. -->
+    </div>
+  </section>
+
+
+
+
+  <section class="section">
+    <!-- Results. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-six-fifths">
+        <!-- <h2 class="title is-3"><img id="painting_icon" width="3%" src="static/images/icon.png"> VL-Mamba</h2> -->
+        <h2 class="title is-3"> VL-Mamba</h2>
+      </div>
+    </div>
+    <!-- </div> https://cdn-icons-png.flaticon.com/512/5379/5379860.png -->
+    <!--/ Results. -->
+    <div class="container is-max-desktop">
+
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <div class="content has-text-justified">
+            <p>
+              VL-Mamba is the first work that explores the state space model Mamba to solve multimodal learning tasks.
+               The VL-Mamba consists of a language model, a vision encoder, and a multimodal connector. 
+               To be specific,we utilize the pre-trained Mamba Large Language Model (Mamba LLM) as the language model. 
+               Then, we study three architectures of MultiModal Connector (MMC) and introduce a Vision Selective Scan (VSS) module in MMC to 
+               bridge the gap between 2D non-causal image information and the inherent causal modeling capabilities of state space models (SSMs). 
+               In the VSS module, we propose two 2D scan mechanisms: the Bidirectional Scanning Mechanism (BSM) and Cross Scanning Mechanism (CSM).
+              
+              <!-- ChatBridge is a multimodal language model capable of perceiving real-world multimodal information,
+              as well as following instructions, thinking, and interacting with humans in natural language.
+              Inspired by <a href="https://arxiv.org/abs/2204.14198">Flamingo</a> and <a
+                href="https://arxiv.org/abs/2301.12597">BLIP-2</a>,
+              we introduce perceiver modules to bridge the encoders and the LLM.
+              we choose open-sourced <a href="https://lmsys.org/blog/2023-03-30-vicuna/">Vicuna-13B</a> as the LLM,
+              which is built upon LLaMA, and reported to achieve 90% of ChatGPT's quality as per GPT-4's evaluation.
+              As for the modal-specific encoders, we choose <a href="https://arxiv.org/abs/2211.07636">EVA-ViT-G</a> as
+              the vision encoder to encode images and videos,
+              and <a href="https://arxiv.org/abs/2212.09058">BEAT</a> as the audio encoder to encoder audios. -->
+
+              <!-- <ul type="1">
+                <li><b>Stage 1: Bridge each modality with language</b>, <span style="font-size: 95%;">leverage
+                    large-scale language-paired two-modality data for multimodal
+                    alignment training, including image-text, video-text, and audio-text pairs.</span></li>
+                <li><b>Stage 2: Multimodal Instruction Tuning</b>, <span style="font-size: 95%;">instruction-finetune
+                    ChatBridge to align the model with user intent on a
+                    multimodal instruction dataset <b>MULTIS</b>, enabling more effective zero-shot generalization on
+                    multimodal tasks.</span></li>
+              </ul> -->
+
+            </p>
+          </div>
+          <centering>
+            <div style="text-align: center;">
+              <img id="teaser" width="90%" src="static/images/arch.png">
+            </div>
+
+
+          </centering>
+        </div>
+      </div>
+
+
+
+  </section>
+
+
+  <section class="section">
+    <!-- Results. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-six-fifths">
+        <!-- <h2 class="title is-3"><img id="painting_icon" width="3%" src="static/images/data.png"> MULTimodal InStruction
+          Datasets (MULTIS)</h2> -->
+        <h2 class="title is-3"> Vision Selective Scan (VSS)</h2>
+      </div>
+    </div>
+    <!-- </div> https://cdn-icons-png.flaticon.com/512/5379/5379860.png -->
+    <!--/ Results. -->
+    <div class="container is-max-desktop">
+
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <div class="content has-text-justified">
+            <p>
+              The VSS module aims to bridge the gap between the 1D sequential processing capabilities inherent in the 
+              SSM and the 2D non-causal visual information. Specifically, the VSS module consists of a 2D vision scan mechanism and one mamba layer. 
+              In this work, we utilize two 2D scan mechanisms: Bidirectional-Scan Mechanism and Cross-Scan Mechanism, as follows:
+              <ul type="1">
+                <li><b>Bidirectional-Scan Mechanism (BSM)</b>: <span style="font-size: 95%;"> scans the image patch features in both forward and backward directions, which aims to capture a broader context without increasing computational complexity.</span></li>
+                <li><b>Cross-Scan Mechanism (CSM)</b>: <span style="font-size: 95%;"> unfolds image patch features into sequences along rows and columns and scans them in four directions (diagonally across the image). </span></li>
+              </ul>
+            </p>
+          </div>
+          <centering>
+            <div style="text-align: center;">
+              <img id="teaser" width="90%" src="static/images/scan.png">
+            </div>
+
+
+          </centering>
+        </div>
+      </div>
+
+
+
+  </section>
+
+
+
+
+
+
+  <section class="section">
+    <!-- Results. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-six-fifths">
+        <!-- <h2 class="title is-3"><img id="painting_icon" width="3%" src="static/images/topic.png"> Examples of VL-Mamba chat</h2> -->
+        <h2 class="title is-3">Examples of VL-Mamba chat</h2>
+      </div>
+    </div>
+    <div class="container is-max-desktop">
+
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <div class="content has-text-justified">
+            <p>
+              <!-- sample -->
+          </div>
+          <centering>
+            <div style="text-align: center;">
+              <!-- <h2 class="title is-5"> Response generated by VL-Mamba</h2> -->
+              <img id="teaser" width="90%" src="static/examples/response.png">
+            </div>
+        </div>
+
+
+
+
+          </div>
+
+
+
+  </section>
+
+
+
+  <!-- <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>@article{zhao2023chatbridge,
+        title={VL-Mamba: Exploring State Space Models for Multimodal Learning},
+        author={Zhao, Zijia and Guo, Longteng and Yue, Tongtian and Chen, Sihan and Shao, Shuai and Zhu, Xinxin and Yuan, Zehuan and Liu, Jing},
+        journal={arXiv preprint arXiv:2305.16103},
+        year={2023}
+      }</code></pre>
+    </div>
+  </section> -->
+  
+  <section class="section" id="Acknowledgement">
+    <div class="container is-max-desktop content">
+      <h2 class="title">Acknowledgement</h2>
+      <p>
+        This website is adapted from <a
+        href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>, licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+        Commons Attribution-ShareAlike 4.0 International License</a>. 
+      </p>
+
+    </div>
+  </section>
+
+</body>
+
+</html>
